@@ -32,6 +32,13 @@ public class VideoInfoController extends ABaseController {
     @Resource
     private VideoInfoService videoInfoService;
 
+
+    /**
+     * 加载视频列表
+     *
+     * @param videoInfoPostQuery
+     * @return
+     */
     @RequestMapping("/loadVideoList")
     public ResponseVO loadVideoList(VideoInfoPostQuery videoInfoPostQuery) {
         videoInfoPostQuery.setOrderBy("last_update_time desc");
@@ -41,11 +48,26 @@ public class VideoInfoController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+    /**
+     * 加载视频详情
+     *
+     * @param videoId
+     * @return
+     */
+
     @RequestMapping("/recommendVideo")
     public ResponseVO recommendVideo(@NotEmpty String videoId) {
         videoInfoPostService.recommendVideo(videoId);
         return getSuccessResponseVO(null);
     }
+
+    /**
+     * 审核视频
+     *
+     * @param videoId
+     * @param status
+     * @param reason
+     */
 
     @RequestMapping("/auditVideo")
     @RecordUserMessage(messageType = MessageTypeEnum.SYS)
@@ -54,12 +76,23 @@ public class VideoInfoController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
+    /**
+     * 删除视频
+     *
+     * @param videoId
+     */
     @RequestMapping("/deleteVideo")
     public ResponseVO deleteVideo(@NotEmpty String videoId) {
         videoInfoService.deleteVideo(videoId, null);
         return getSuccessResponseVO(null);
     }
 
+    /**
+     * 加载视频
+     *
+     * @param videoId
+     * @return
+     */
     @RequestMapping("/loadVideoPList")
     public ResponseVO loadVideoPList(@NotEmpty String videoId) {
         VideoInfoFilePostQuery postQuery = new VideoInfoFilePostQuery();

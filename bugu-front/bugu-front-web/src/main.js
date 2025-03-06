@@ -27,6 +27,8 @@ import Message from "@/utils/Message"
 import Utils from "@/utils/Utils"
 import Verify from "@/utils/Verify"
 import Confirm from "@/utils/Confirm.js"
+import UndrawUi from 'undraw-ui';
+import 'undraw-ui/dist/style.css'
 
 import { Api } from "@/utils/Api.js"
 
@@ -34,7 +36,7 @@ const app = createApp(App)
 app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)
-
+app.use(UndrawUi)
 app.component("Collapse", Collapse);
 app.component("Avatar", Avatar);
 app.component("Cover", Cover);

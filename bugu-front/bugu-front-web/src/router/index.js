@@ -18,10 +18,29 @@ const router = createRouter({
           component: () => import('@/views/index/Index.vue'),
         },
         {
-          path: '/video/:videoId',
-          name: 'videoDetail',
-          component: () => import('@/views/videoDetail/VideoDetail.vue'),
+          path: '/ai',
+          name: 'ai',
+          component: () => import('@/views/ai/ai.vue'),
+          children: [
+            {
+              path: '/aipage',
+              name: 'aipage',
+              component: () => import('@/views/ai/AiPage.vue'),
+            },
+            {
+              path: '/aivedio',
+              name: 'aivedio',
+              component: () => import('@/views/ai/AiVedio.vue'),
+            },
+            {
+              path: '/aitupian',
+              name: 'aitupian',
+              component: () => import('@/views/ai/Aitupian.vue'),
+            },
+          ]
         },
+
+
         {
           path: '/v/:pCategoryCode',
           name: 'categoryVideo',

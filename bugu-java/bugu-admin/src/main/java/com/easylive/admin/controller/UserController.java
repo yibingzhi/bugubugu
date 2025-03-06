@@ -18,6 +18,13 @@ public class UserController extends ABaseController {
     @Resource
     private UserInfoService userInfoService;
 
+
+    /**
+     * 加载用户列表
+     *
+     * @param userInfoQuery
+     * @return
+     */
     @RequestMapping("/loadUser")
     public ResponseVO loadUser(UserInfoQuery userInfoQuery) {
         userInfoQuery.setOrderBy("join_time desc");
@@ -25,6 +32,14 @@ public class UserController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+
+    /**
+     * 修改用户状态
+     *
+     * @param userId
+     * @param status
+     * @return
+     */
     @RequestMapping("/changeStatus")
     public ResponseVO changeStatus(String userId, Integer status) {
         UserInfo userInfo = new UserInfo();

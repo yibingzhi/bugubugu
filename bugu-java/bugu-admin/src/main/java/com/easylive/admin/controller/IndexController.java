@@ -30,6 +30,12 @@ public class IndexController extends ABaseController {
     @Resource
     private UserInfoService userInfoService;
 
+
+    /**
+     * 获取前一天的数据
+     *
+     * @return
+     */
     @RequestMapping("/getActualTimeStatisticsInfo")
     public ResponseVO getActualTimeStatisticsInfo() {
         String preDate = DateUtil.getBeforeDayDate(1);
@@ -52,6 +58,12 @@ public class IndexController extends ABaseController {
         return getSuccessResponseVO(result);
     }
 
+
+    /**
+     * 获取近7天的数据
+     *
+     * @return
+     */
     @RequestMapping("/getWeekStatisticsInfo")
     public ResponseVO getWeekStatisticsInfo(Integer dataType) {
         List<String> dateList = DateUtil.getBeforeDates(7);

@@ -26,6 +26,9 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * UHome视频系列控制器类，用于处理与UHome视频系列相关的HTTP请求。
+ */
 @RestController
 @Validated
 @RequestMapping("/uhome/series")
@@ -40,6 +43,12 @@ public class UHomeVideoSeriesController extends ABaseController {
     @Resource
     private UserVideoSeriesVideoService userVideoSeriesVideoService;
 
+    /**
+     * 处理请求路径为/uhome/series/loadVideoSeries的HTTP GET请求，用于加载用户的所有视频系列。
+     *
+     * @param userId 用户ID，不能为空
+     * @return 包含用户所有视频系列的成功响应对象
+     */
     @RequestMapping("/loadVideoSeries")
     @GlobalInterceptor
     public ResponseVO loadVideoSeries(@NotEmpty String userId) {
@@ -48,13 +57,13 @@ public class UHomeVideoSeriesController extends ABaseController {
     }
 
     /**
-     * 保存系列
+     * 处理请求路径为/uhome/series/saveVideoSeries的HTTP POST请求，用于保存视频系列。
      *
-     * @param seriesId
-     * @param seriesName
-     * @param seriesDescription
-     * @param videoIds
-     * @return
+     * @param seriesId          系列ID
+     * @param seriesName        系列名称，不能为空，最大长度为100
+     * @param seriesDescription 系列描述，最大长度为200
+     * @param videoIds          视频ID列表
+     * @return 保存成功的响应对象
      */
     @RequestMapping("/saveVideoSeries")
     @GlobalInterceptor(checkLogin = true)
@@ -72,6 +81,12 @@ public class UHomeVideoSeriesController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
+    /**
+     * 处理请求路径为/uhome/series/loadAllVideo的HTTP GET请求，用于加载所有视频（排除已在指定系列中的视频）。
+     *
+     * @param seriesId 系列ID
+     * @return 包含所有符合条件视频信息的成功响应对象
+     */
     @RequestMapping("/loadAllVideo")
     @GlobalInterceptor(checkLogin = true)
     public ResponseVO loadAllVideo(Integer seriesId) {
@@ -90,6 +105,12 @@ public class UHomeVideoSeriesController extends ABaseController {
         return getSuccessResponseVO(videoInfoList);
     }
 
+    /**
+     * 处理请求路径为/uhome/series/getVideoSeriesDetail的HTTP GET请求，用于获取视频系列详情。
+     *
+     * @param seriesId 系列ID，不能为空
+     * @return 包含视频系列详情的成功响应对象，如果视频系列不存在则抛出业务异常
+     */
     @RequestMapping("/getVideoSeriesDetail")
     @GlobalInterceptor
     public ResponseVO getVideoSeriesDetail(@NotNull Integer seriesId) {
@@ -107,11 +128,11 @@ public class UHomeVideoSeriesController extends ABaseController {
     }
 
     /**
-     * 保存系列视频
+     * 处理请求路径为/uhome/series/saveSeriesVideo的HTTP POST请求，用于保存系列视频。
      *
-     * @param seriesId
-     * @param videoIds
-     * @return
+     * @param seriesId 系列ID，不能为空
+     * @param videoIds 视频ID列表，不能为空
+     * @return 保存成功的响应对象
      */
     @RequestMapping("/saveSeriesVideo")
     @GlobalInterceptor(checkLogin = true)
@@ -122,11 +143,11 @@ public class UHomeVideoSeriesController extends ABaseController {
     }
 
     /**
-     * 删除视频
+     * 处理请求路径为/uhome/series/delSeriesVideo的HTTP POST请求，用于删除系列中的视频。
      *
-     * @param seriesId
-     * @param videoId
-     * @return
+     * @param seriesId 系列ID，不能为空
+     * @param videoId  视频ID，不能为空
+     * @return 删除成功的响应对象
      */
     @RequestMapping("/delSeriesVideo")
     @GlobalInterceptor(checkLogin = true)
@@ -137,10 +158,10 @@ public class UHomeVideoSeriesController extends ABaseController {
     }
 
     /**
-     * 删除系列
+     * 处理请求路径为/uhome/series/delVideoSeries的HTTP POST请求，用于删除视频系列。
      *
-     * @param seriesId
-     * @return
+     * @param seriesId 系列ID，不能为空
+     * @return 删除成功的响应对象
      */
     @RequestMapping("/delVideoSeries")
     @GlobalInterceptor(checkLogin = true)
@@ -150,12 +171,11 @@ public class UHomeVideoSeriesController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
-
     /**
-     * 系列排序
+     * 处理请求路径为/uhome/series/changeVideoSeriesSort的HTTP POST请求，用于更改视频系列排序。
      *
-     * @param seriesIds
-     * @return
+     * @param seriesIds 系列ID列表，不能为空
+     * @return 排序更改成功的响应对象
      */
     @RequestMapping("/changeVideoSeriesSort")
     @GlobalInterceptor(checkLogin = true)
@@ -165,7 +185,12 @@ public class UHomeVideoSeriesController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
-
+    /**
+     * 处理请求路径为/uhome/series/loadVideoSeriesWithVideo的HTTP GET请求，用于加载包含视频的视频系列。
+     *
+     * @param userId 用户ID，不能为空
+     * @return 包含视频的视频系列列表的成功响应对象
+     */
     @RequestMapping("/loadVideoSeriesWithVideo")
     @GlobalInterceptor
     public ResponseVO loadVideoSeriesWithVideo(@NotEmpty String userId) {

@@ -19,11 +19,23 @@ public class SettingController extends ABaseController {
     @Resource
     private RedisComponent redisComponent;
 
+
+    /**
+     * 获取系统设置
+     *
+     * @return
+     */
     @RequestMapping("/getSetting")
     public ResponseVO getSetting() {
         return getSuccessResponseVO(redisComponent.getSysSettingDto());
     }
 
+    /**
+     * 保存系统设置
+     *
+     * @param sysSettingDto
+     * @return
+     */
 
     @RequestMapping("/saveSetting")
     public ResponseVO saveSetting(SysSettingDto sysSettingDto) {

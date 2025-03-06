@@ -20,6 +20,8 @@ import com.easylive.service.VideoCommentService;
 import com.easylive.service.impl.VideoInfoServiceImpl;
 import com.easylive.web.annotation.GlobalInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +40,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class VideoCommentController extends ABaseController {
 
+    private static final Logger logger = LoggerFactory.getLogger(VideoCommentController.class);
+
     @Resource
     private VideoCommentService videoCommentService;
 
@@ -47,6 +51,14 @@ public class VideoCommentController extends ABaseController {
     @Resource
     private VideoInfoServiceImpl videoInfoService;
 
+    /**
+     * 处理请求路径为/comment/loadComment的HTTP GET请求，用于加载视频评论。
+     *
+     * @param videoId   视频ID，不能为空
+     * @param pageNo    页码
+     * @param orderType 排序类型，0表示按点赞数和评论ID倒序，其他值表示按评论ID倒序
+     * @return 包含视频评论数据和用户对评论的操作信息的成功响应对象
+     */
     @RequestMapping("/loadComment")
     @GlobalInterceptor
     public ResponseVO loadComment(@NotEmpty String videoId, Integer pageNo, Integer orderType) {
@@ -92,6 +104,12 @@ public class VideoCommentController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+    /**
+     * 获取置顶评论列表
+     *
+     * @param videoId 视频ID
+     * @return 置顶评论列表
+     */
     private List<VideoComment> topComment(String videoId) {
         VideoCommentQuery commentQuery = new VideoCommentQuery();
         commentQuery.setVideoId(videoId);
@@ -101,6 +119,15 @@ public class VideoCommentController extends ABaseController {
         return videoCommentList;
     }
 
+    /**
+     * 处理请求路径为/comment/postComment的HTTP POST请求，用于发布评论。
+     *
+     * @param videoId        视频ID，不能为空
+     * @param replyCommentId 回复的评论ID
+     * @param content        评论内容，不能为空，最大长度为500
+     * @param imgPath        评论图片路径，最大长度为50
+     * @return 发布成功的评论对象
+     */
     @RequestMapping("/postComment")
     @GlobalInterceptor(checkLogin = true)
     @RecordUserMessage(messageType = MessageTypeEnum.COMMENT)
@@ -122,6 +149,12 @@ public class VideoCommentController extends ABaseController {
     }
 
 
+    /**
+     * 处理请求路径为/comment/userDelComment的HTTP POST请求，用于用户删除评论。
+     *
+     * @param commentId 评论ID，不能为空
+     * @return 操作结果
+     */
     @RequestMapping("/userDelComment")
     @GlobalInterceptor(checkLogin = true)
     public ResponseVO userDelComment(@NotNull Integer commentId) {
@@ -131,6 +164,12 @@ public class VideoCommentController extends ABaseController {
         return getSuccessResponseVO(comment);
     }
 
+    /**
+     * 处理请求路径为/comment/topComment的HTTP POST请求，用于置顶评论。
+     *
+     * @param commentId 评论ID，不能为空
+     * @return 操作结果
+     */
     @RequestMapping("/topComment")
     @GlobalInterceptor(checkLogin = true)
     public ResponseVO topComment(@NotNull Integer commentId) {
@@ -139,6 +178,12 @@ public class VideoCommentController extends ABaseController {
         return getSuccessResponseVO(null);
     }
 
+    /**
+     * 处理请求路径为/comment/cancelTopComment的HTTP POST请求，用于取消置顶评论。
+     *
+     * @param commentId 评论ID，不能为空
+     * @return 操作结果
+     */
     @RequestMapping("/cancelTopComment")
     @GlobalInterceptor(checkLogin = true)
     public ResponseVO cancelTopComment(@NotNull Integer commentId) {

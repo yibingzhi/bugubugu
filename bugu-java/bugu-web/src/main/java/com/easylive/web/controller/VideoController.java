@@ -22,6 +22,8 @@ import com.easylive.service.VideoInfoService;
 import com.easylive.utils.CopyTools;
 import com.easylive.web.annotation.GlobalInterceptor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,11 +34,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+/**
+ * 视频控制器类，用于处理与视频相关的HTTP请求。
+ */
 @RestController
 @Validated
 @RequestMapping("/video")
 @Slf4j
 public class VideoController extends ABaseController {
+
+    private static final Logger logger = LoggerFactory.getLogger(VideoController.class);
 
     @Resource
     private VideoInfoService videoInfoService;
@@ -53,6 +61,11 @@ public class VideoController extends ABaseController {
     @Resource
     private EsSearchComponent esSearchComponent;
 
+    /**
+     * 处理请求路径为/video/loadRecommendVideo的HTTP GET请求，用于加载推荐视频列表。
+     *
+     * @return 包含推荐视频列表的成功响应对象
+     */
     @RequestMapping("/loadRecommendVideo")
     @GlobalInterceptor
     public ResponseVO loadRecommendVideo() {
@@ -64,6 +77,14 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(recommendVideoList);
     }
 
+    /**
+     * 处理请求路径为/video/loadVideo的HTTP GET请求，用于加载视频列表。
+     *
+     * @param pCategoryId 父分类ID
+     * @param categoryId  分类ID
+     * @param pageNo      页码
+     * @return 包含视频列表分页结果的成功响应对象
+     */
     @RequestMapping("/loadVideo")
     @GlobalInterceptor
     public ResponseVO postVideo(Integer pCategoryId, Integer categoryId, Integer pageNo) {
@@ -80,6 +101,12 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+    /**
+     * 处理请求路径为/video/loadVideoPList的HTTP GET请求，用于加载视频的播放列表。
+     *
+     * @param videoId 视频ID，不能为空
+     * @return 包含视频播放列表的成功响应对象
+     */
     @RequestMapping("/loadVideoPList")
     @GlobalInterceptor
     public ResponseVO loadVideoPList(@NotEmpty String videoId) {
@@ -90,6 +117,12 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(fileList);
     }
 
+    /**
+     * 处理请求路径为/video/getVideoInfo的HTTP GET请求，用于获取视频信息。
+     *
+     * @param videoId 视频ID，不能为空
+     * @return 包含视频信息和用户对视频操作信息的成功响应对象，如果视频不存在则抛出业务异常
+     */
     @RequestMapping("/getVideoInfo")
     @GlobalInterceptor
     public ResponseVO getVideoInfo(@NotEmpty String videoId) {
@@ -114,6 +147,13 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(resultVo);
     }
 
+    /**
+     * 处理请求路径为/video/getVideoRecommend的HTTP GET请求，用于获取视频推荐列表。
+     *
+     * @param keyword 搜索关键词，不能为空
+     * @param videoId 视频ID，不能为空
+     * @return 包含视频推荐列表的成功响应对象，排除当前视频
+     */
     @RequestMapping("/getVideoRecommend")
     @GlobalInterceptor
     public ResponseVO getVideoRecommend(@NotEmpty String keyword, @NotEmpty String videoId) {
@@ -122,7 +162,13 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(videoInfoList);
     }
 
-
+    /**
+     * 处理请求路径为/video/reportVideoPlayOnline的HTTP POST请求，用于上报视频在线播放数据。
+     *
+     * @param fileId   文件ID，不能为空
+     * @param deviceId 设备ID
+     * @return 上报结果的成功响应对象
+     */
     @RequestMapping("/reportVideoPlayOnline")
     @GlobalInterceptor
     public ResponseVO reportVideoPlayOnline(@NotEmpty String fileId, String deviceId) {
@@ -130,6 +176,14 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(count);
     }
 
+    /**
+     * 处理请求路径为/video/search的HTTP GET请求，用于搜索视频。
+     *
+     * @param keyword   搜索关键词，不能为空
+     * @param orderType 排序类型
+     * @param pageNo    页码
+     * @return 包含搜索结果分页的成功响应对象
+     */
     @RequestMapping("/search")
     @GlobalInterceptor
     public ResponseVO search(@NotEmpty String keyword, Integer orderType, Integer pageNo) {
@@ -138,6 +192,11 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+    /**
+     * 处理请求路径为/video/getSearchKeywordTop的HTTP GET请求，用于获取搜索关键词排行榜。
+     *
+     * @return 包含搜索关键词排行榜的成功响应对象
+     */
     @RequestMapping("/getSearchKeywordTop")
     @GlobalInterceptor
     public ResponseVO getSearchKeywordTop() {
@@ -145,6 +204,12 @@ public class VideoController extends ABaseController {
         return getSuccessResponseVO(keywordList);
     }
 
+    /**
+     * 处理请求路径为/video/loadHotVideoList的HTTP GET请求，用于加载热门视频列表。
+     *
+     * @param pageNo 页码
+     * @return 包含热门视频列表分页结果的成功响应对象
+     */
     @RequestMapping("/loadHotVideoList")
     @GlobalInterceptor
     public ResponseVO loadHotVideoList(Integer pageNo) {

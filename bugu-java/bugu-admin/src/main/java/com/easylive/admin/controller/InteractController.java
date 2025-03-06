@@ -24,6 +24,13 @@ public class InteractController extends ABaseController {
     private VideoDanmuService videoDanmuService;
 
 
+    /**
+     * 弹幕列表
+     *
+     * @param pageNo
+     * @param videoNameFuzzy
+     * @return
+     */
     @RequestMapping("/loadDanmu")
     public ResponseVO loadDanmu(Integer pageNo, String videoNameFuzzy) {
         VideoDanmuQuery danmuQuery = new VideoDanmuQuery();
@@ -36,12 +43,27 @@ public class InteractController extends ABaseController {
     }
 
 
+    /**
+     * 删除弹幕
+     *
+     * @param danmuId
+     * @return
+     */
+
     @RequestMapping("/delDanmu")
     public ResponseVO delDanmu(@NotNull Integer danmuId) {
         videoDanmuService.deleteDanmu(null, danmuId);
         return getSuccessResponseVO(null);
     }
 
+
+    /**
+     * 评论列表
+     *
+     * @param pageNo
+     * @param videoNameFuzzy
+     * @return
+     */
     @RequestMapping("/loadComment")
     public ResponseVO loadComment(Integer pageNo, String videoNameFuzzy) {
         VideoCommentQuery commentQuery = new VideoCommentQuery();
@@ -53,6 +75,13 @@ public class InteractController extends ABaseController {
         return getSuccessResponseVO(resultVO);
     }
 
+
+    /**
+     * 删除评论
+     *
+     * @param commentId
+     * @return
+     */
     @RequestMapping("/delComment")
     public ResponseVO delComment(@NotNull Integer commentId) {
         videoCommentService.deleteComment(commentId, null);
